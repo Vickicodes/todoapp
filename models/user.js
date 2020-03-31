@@ -1,9 +1,11 @@
 'use strict';
+const passportLocalSequelize = require('passport-local-sequelize');
+
 module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define(
 		'user',
 		{
-			userName: DataTypes.STRING,
+			username: DataTypes.STRING,
 			password: DataTypes.STRING
 		},
 		{}
@@ -16,5 +18,8 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: 'CASCADE'
 		});
 	};
+	passportLocalSequelize.attachToUser(User, {
+		usernameField: 'username'
+	});
 	return User;
 };
