@@ -8,7 +8,6 @@ const flash = require('connect-flash');
 
 //========== Models =====================
 const models = require('./models');
-const User = models.user;
 const TodoList = models.todo_list;
 // =======  ==================
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,11 +29,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-// =========== load passport strategies ============
+// =========== load passport strategies & routes ============
 require('./config/passport.js')(passport, models.user);
-const authRoute = require('./routes/auth.js')(app, passport);
+require('./routes/auth.js')(app, passport);
 // ===== Pass User and Flash message to each template ==========
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	res.locals.path = req.path;
 	res.locals.error = req.flash('error');
@@ -44,8 +43,8 @@ app.use(function(req, res, next) {
 
 // ========== Routes ======================
 
-app.get('/', function(req, res) {
-	res.redirect('/todolist');
+app.get('/', (req, res) => {
+	res.render('landing');
 });
 
 // ===== get the todo items from the db ====
@@ -61,7 +60,7 @@ app.get('/todolist', async (req, res) => {
 	return res.render('index', { todoLists: todolists });
 });
 
-app.post('/todolist', function(req, res) {
+app.post('/todolist', (req, res) => {
 	let todo = req.body.todo;
 	let newTodo = { item: todo };
 	TodoList.create(newTodo, function(err, item) {
@@ -74,6 +73,6 @@ app.post('/todolist', function(req, res) {
 	});
 });
 
-app.listen(3000, function() {
+app.listen(3000, () => {
 	console.log('To Do app on port 3000');
 });

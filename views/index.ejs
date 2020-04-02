@@ -1,17 +1,26 @@
 <%- include("partials/header") %>
 <div class="row">
     <div class="col-md-4">
-        <div class="container">
-            <h1>My Lists</h1>
-            <% todoLists.forEach((todoList) => { %>
-                <h2><%= todoList.name %><i class="fas fa-plus"></i></h1>
-            <% }); %>
+        <div class="box lists">
+            <% if(currentUser) { %>
+                <h1><%= currentUser.username %>'s lists</h1>
+                <ul class="">
+                    <li><a href="">Create a new List </i></a></li>
+                    <form id="newList" action="" method="POST">
+                        <input type="text" name="todoList" placeholder="create a new todo list">
+                    </form>
+                    <% todoLists.forEach((todoList) => { %>
+                        <li><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
+                        <li><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
+                    <% }); %>
+                </ul>
+            <% }; %>
         </div>
     </div>
     <div class="col-md-8">
-        <div id="container">
+        <div class="box">
             <% todoLists.forEach((todoList) => { %>
-                <h2><%= todoList.name %><i class="fas fa-plus"></i></h1>
+                <h2 id="todoListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
                 <form id="todoform" action="/todolist" method="POST">
                     <input type="text" name="todo" placeholder="add new to-do item">
                 </form>
