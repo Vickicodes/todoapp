@@ -49,14 +49,22 @@ app.get('/', (req, res) => {
 
 // ===== get the todo items from the db ====
 app.get('/todolist', async (req, res) => {
-	const todolists = await TodoList.findAll({
-		include: [
-			{
-				model: models.todo_list_item,
-				as: 'todoListItems'
-			}
-		]
-	});
+	let todolists = [];
+
+	if (req.user) {
+		todolists = await TodoList.findAll({
+			where: {
+				userId: req.user.id
+			},
+			include: [
+				{
+					model: models.todo_list_item,
+					as: 'todoListItems'
+				}
+			]
+		});
+	}
+
 	return res.render('index', { todoLists: todolists });
 });
 
