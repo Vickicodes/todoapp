@@ -48,8 +48,9 @@ app.get('/', (req, res) => {
 });
 
 // ===== get the todo items from the db ====
-app.get('/todolist', async (req, res) => {
+app.get('/todolist/:id?', async (req, res) => {
 	let todolists = [];
+	let fullLists = [];
 
 	if (req.user) {
 		todolists = await TodoList.findAll({
@@ -64,21 +65,26 @@ app.get('/todolist', async (req, res) => {
 			]
 		});
 	}
-
-	return res.render('index', { todoLists: todolists });
+	if (req.params.id) {
+		fullLists = todolists.filter((todoList) => {
+			return todoList.id == parseInt(req.params.id);
+		});
+	} else if (todolists.length > 0) {
+		fullLists.push(todolists[0]);
+	}
+	return res.render('index', { todoLists: todolists, fullLists: fullLists });
 });
 
 app.post('/todolist', (req, res) => {
-	let todo = req.body.todo;
-	let newTodo = { item: todo };
-	TodoList.create(newTodo, function(err, item) {
-		if (err) {
+	let newTodo = { name: req.body.name, userId: req.user.id };
+
+	TodoList.create(newTodo)
+		.then((todolist) => {
+			res.redirect('/todolist/' + todolist.id);
+		})
+		.catch((err) => {
 			console.log(err);
-		} else {
-			console.log('we just saved ' + item);
-			res.redirect('/todolist');
-		}
-	});
+		});
 });
 
 app.listen(3000, () => {

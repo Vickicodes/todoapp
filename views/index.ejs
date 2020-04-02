@@ -6,11 +6,10 @@
                 <h1><%= currentUser.username %>'s lists</h1>
                 <ul class="">
                     <li><a href="">Create a new List <i class="fas fa-plus"></i></a></li>
-                    <form id="newList" action="" method="POST">
-                        <input type="text" name="todoList" placeholder="create a new todo list">
+                    <form id="newList" action="/todolist" method="POST">
+                        <input type="text" name="name" placeholder="create a new todo list">
                     </form>
                     <% todoLists.forEach((todoList) => { %>
-                        <li><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
                         <li><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
                     <% }); %>
                 </ul>
@@ -19,17 +18,19 @@
     </div>
     <div class="col-md-8">
         <div class="box">
-            <% todoLists.forEach((todoList) => { %>
-                <h2 id="todoListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
-                <form id="todoform" action="/todolist" method="POST">
-                    <input type="text" name="todo" placeholder="add new to-do item">
-                </form>
-                <ul class="todoList">
-                    <% todoList.todoListItems.forEach(function(newTodo) { %>
-                        <li class="todoItem"><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= newTodo.description %></li>
-                    <% }); %> 
-                </ul>
-            <% }); %>
+            <% if(currentUser) { %>
+                <% fullLists.forEach((todoList) => { %>
+                    <h2 id="todoListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
+                    <form id="todoform" action="/todolist" method="POST">
+                        <input type="text" name="todo" placeholder="add new to-do item">
+                    </form>
+                    <ul class="todoList">
+                        <% todoList.todoListItems.forEach(function(newTodo) { %>
+                            <li class="todoItem"><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= newTodo.description %></li>
+                        <% }); %> 
+                    </ul>
+                <% }); %>
+            <% }; %>
         </div>    
     </div>
 </div>  

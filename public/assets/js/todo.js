@@ -9,14 +9,7 @@ $('ul').on('click', '.deleteIcon', function(event) {
 	});
 	event.stopPropagation();
 });
-// add a to-do item
-$("input[type='text']").keypress(function(event) {
-	if (event.which === 13) {
-		let todoText = $(this).val();
-		$(this).val('');
-		$('.todoList').append("<li><span><i class='fas fa-trash-alt'></i></span>" + todoText + '</li>');
-	}
-});
+
 $('.fa-plus').click(function() {
 	$('#todoform').first().fadeToggle();
 });
