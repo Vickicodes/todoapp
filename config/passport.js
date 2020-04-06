@@ -9,7 +9,7 @@ module.exports = (passport, user) => {
 			{
 				usernameField: 'username',
 				passwordField: 'password',
-				passReqToCallback: true // allows us to pass back the entire request to the callback
+				passReqToCallback: true
 			},
 			(req, username, password, done) => {
 				const generateHash = (password) => {
@@ -43,28 +43,15 @@ module.exports = (passport, user) => {
 			}
 		)
 	);
-	passport.serializeUser((user, done) => {
-		done(null, user.id);
-	});
-	passport.deserializeUser((id, done) => {
-		User.findByPk(id).then((user) => {
-			if (user) {
-				done(null, user.get());
-			} else {
-				done(user.errors, null);
-			}
-		});
-	});
+
 	//LOCAL SIGNIN
 	passport.use(
 		'local-signin',
 		new LocalStrategy(
 			{
-				// by default, local strategy uses username and password, we will override with email
-
 				usernameField: 'username',
 				passwordField: 'password',
-				passReqToCallback: true // allows us to pass back the entire request to the callback
+				passReqToCallback: true
 			},
 			(req, username, password, done) => {
 				const User = user;
@@ -94,4 +81,16 @@ module.exports = (passport, user) => {
 			}
 		)
 	);
+	passport.serializeUser((user, done) => {
+		done(null, user.id);
+	});
+	passport.deserializeUser((id, done) => {
+		User.findByPk(id).then((user) => {
+			if (user) {
+				done(null, user.get());
+			} else {
+				done(user.errors, null);
+			}
+		});
+	});
 };

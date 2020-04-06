@@ -1,16 +1,17 @@
 <%- include("partials/header") %>
 <div class="row">
     <div class="col-md-4">
-        <div class="box lists">
+        <div class="box">
             <% if(currentUser) { %>
-                <h1><%= currentUser.username %>'s lists</h1>
+                <h1 class="ListHeader"><%= currentUser.username %>'s lists <i class="fas fa-tasks"></i> </h1>
                 <ul class="">
-                    <li><a href="">Create a new List <i class="fas fa-plus"></i></a></li>
-                    <form id="newList" action="/todolist" method="POST">
-                        <input type="text" name="name" placeholder="create a new todo list">
-                    </form>
+                    <li>
+                        <form id="newList" action="/todolist" method="POST">
+                            <input type="text" name="name" placeholder="create a new todo list">
+                        </form>
+                    </li>
                     <% todoLists.forEach((todoList) => { %>
-                        <li><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
+                        <li class="todoItem"><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
                     <% }); %>
                 </ul>
             <% }; %>
@@ -20,8 +21,8 @@
         <div class="box">
             <% if(currentUser) { %>
                 <% fullLists.forEach((todoList) => { %>
-                    <h2 id="todoListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
-                    <form id="todoform" action="/todolist" method="POST">
+                    <h2 class="ListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
+                    <form id="todoform" action="/todolist/<%= todoList.id %>/item" method="POST">
                         <input type="text" name="todo" placeholder="add new to-do item">
                     </form>
                     <ul class="todoList">

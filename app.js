@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 //========== Models =====================
 const models = require('./models');
 const TodoList = models.todo_list;
+const TodoListItem = models.todo_list_item;
 // =======  ==================
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,7 +30,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-// =========== load passport strategies & routes ============
+// ======== load passport strategies  ============
 require('./config/passport.js')(passport, models.user);
 require('./routes/auth.js')(app, passport);
 // ===== Pass User and Flash message to each template ==========
@@ -40,52 +41,8 @@ app.use((req, res, next) => {
 	res.locals.success = req.flash('success');
 	next();
 });
-
-// ========== Routes ======================
-
-app.get('/', (req, res) => {
-	res.render('landing');
-});
-
-// ===== get the todo items from the db ====
-app.get('/todolist/:id?', async (req, res) => {
-	let todolists = [];
-	let fullLists = [];
-
-	if (req.user) {
-		todolists = await TodoList.findAll({
-			where: {
-				userId: req.user.id
-			},
-			include: [
-				{
-					model: models.todo_list_item,
-					as: 'todoListItems'
-				}
-			]
-		});
-	}
-	if (req.params.id) {
-		fullLists = todolists.filter((todoList) => {
-			return todoList.id == parseInt(req.params.id);
-		});
-	} else if (todolists.length > 0) {
-		fullLists.push(todolists[0]);
-	}
-	return res.render('index', { todoLists: todolists, fullLists: fullLists });
-});
-
-app.post('/todolist', (req, res) => {
-	let newTodo = { name: req.body.name, userId: req.user.id };
-
-	TodoList.create(newTodo)
-		.then((todolist) => {
-			res.redirect('/todolist/' + todolist.id);
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-});
+// ============= Routes ==================
+app.use('/', require('./routes/index.js'));
 
 app.listen(3000, () => {
 	console.log('To Do app on port 3000');

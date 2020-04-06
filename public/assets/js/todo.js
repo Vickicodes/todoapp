@@ -2,13 +2,13 @@
 $('ul').on('click', '.todoItem', function() {
 	$(this).toggleClass('completed');
 });
-// click on x to delete todo
-$('ul').on('click', '.deleteIcon', function(event) {
-	$(this).parent().fadeOut(500, function() {
-		$(this).remove();
-	});
-	event.stopPropagation();
-});
+// // click on x to delete todo
+// $('ul').on('click', '.deleteIcon', function(event) {
+// 	$(this).parent().fadeOut(500, function() {
+// 		$(this).remove();
+// 	});
+// 	event.stopPropagation();
+// });
 
 $('.fa-plus').click(function() {
 	$('#todoform').first().fadeToggle();
