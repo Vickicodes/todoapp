@@ -27,7 +27,12 @@
                     </form>
                     <ul class="todoList">
                         <% todoList.todoListItems.forEach(function(newTodo) { %>
-                            <li class="todoItem"><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= newTodo.description %></li>
+                            <li class="todoItem <%= newTodo.completed ? 'completed' : null %>" data-id="<%= newTodo.id %>">
+                                <form action="/todolist/<%= todoList.id %>/item/<%= newTodo.id %>?_method=DELETE" method="POST">
+                                    <button class="deleteIcon"><i class="fas fa-trash-alt"></i></button>
+                                    <%= newTodo.description %>
+                                </form>
+                            </li>
                         <% }); %> 
                     </ul>
                 <% }); %>

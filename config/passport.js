@@ -12,6 +12,7 @@ module.exports = (passport, user) => {
 				passReqToCallback: true
 			},
 			(req, username, password, done) => {
+				username = username.toLowerCase();
 				const generateHash = (password) => {
 					return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 				};
@@ -30,7 +31,7 @@ module.exports = (passport, user) => {
 							username: username,
 							password: userPassword
 						};
-						User.create(data).then((newUser, created) => {
+						User.create(data).then((newUser) => {
 							if (!newUser) {
 								return done(null, false);
 							}
@@ -60,7 +61,7 @@ module.exports = (passport, user) => {
 				};
 				User.findOne({
 					where: {
-						username: username
+						username: username.toLowerCase()
 					}
 				})
 					.then((user) => {

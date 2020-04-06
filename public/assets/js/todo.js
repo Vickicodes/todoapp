@@ -1,23 +1,22 @@
 // cross off todo item
-$('ul').on('click', '.todoItem', function() {
+$('ul.todoList').on('click', '.todoItem', function() {
 	$(this).toggleClass('completed');
+	const itemId = $(this).attr('data-id');
+
+	$.ajax({
+		url: '/item/' + itemId + '/toggle',
+		method: 'PUT'
+	});
 });
-// // click on x to delete todo
-// $('ul').on('click', '.deleteIcon', function(event) {
-// 	$(this).parent().fadeOut(500, function() {
-// 		$(this).remove();
-// 	});
-// 	event.stopPropagation();
-// });
 
 $('.fa-plus').click(function() {
 	$('#todoform').first().fadeToggle();
 });
 
 $('#registerForm').on('submit', function() {
-	let username = $('#registerForm input[name="username"').val();
-	let password = $('#registerForm input[name="password"').val();
-	let confirm = $('#registerForm input[name="confirm"').val();
+	let username = $('#registerForm input[name="username"]').val();
+	let password = $('#registerForm input[name="password"]').val();
+	let confirm = $('#registerForm input[name="confirm"]').val();
 	let messageElement = $('.passwordError');
 	let isValid = true;
 	if (password !== confirm) {

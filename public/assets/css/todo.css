@@ -66,6 +66,9 @@ ul {
 	margin: 0;
 	padding: 0;
 }
+.todoList form {
+	display: inline;
+}
 .todoItem {
 	background-color: rgb(250, 250, 250);
 	color: rgb(70, 70, 70);

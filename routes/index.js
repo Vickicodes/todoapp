@@ -58,7 +58,34 @@ router.post('/todolist/:id/item', (req, res) => {
 		});
 });
 // ========== update todo item when completed =========
+router.put('/item/:id/toggle', (req, res) => {
+	// Find the TodolistItem
+	TodoListItem.findByPk(req.params.id).then((item) => {
+		if (item.completed) {
+			item.completed = false;
+		} else {
+			item.completed = true;
+		}
+		console.log(item);
+		item.save();
+	});
+	// Update the item with the opposite "completed" boolean
+});
 // ========== delete a to do item ===========
+router.delete('/todolist/:listId/item/:id', (req, res) => {
+	TodoListItem.destroy({
+		where: {
+			id: req.params.id
+		}
+	})
+		.then(() => {
+			console.log('deleted an item');
+			res.redirect('/todolist/' + req.params.listId);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+});
 // ========== delete a todo list ============
 
 module.exports = router;
