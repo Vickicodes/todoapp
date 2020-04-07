@@ -6,6 +6,7 @@ const TodoListItem = models.todo_list_item;
 
 // ========== Routes ======================
 router.get('/', (req, res) => {
+	console.log('Attempting to render landing page');
 	res.render('landing');
 });
 // ===== get the todo lists from the db ====

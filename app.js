@@ -41,6 +41,8 @@ app.use((req, res, next) => {
 	res.locals.success = req.flash('success');
 	next();
 });
+
+console.log('Got to app.js:45');
 // ============= Routes ==================
 app.use('/', require('./routes/index.js'));
 
