@@ -20,7 +20,8 @@ router.get('/todolist/:id?', async (req, res) => {
 			include: [
 				{
 					model: models.todo_list_item,
-					as: 'todoListItems'
+					as: 'todoListItems',
+					order: models.sequelize.literal('"createdAt"', 'asc')
 				}
 			]
 		});
@@ -59,17 +60,14 @@ router.post('/todolist/:id/item', (req, res) => {
 });
 // ========== update todo item when completed =========
 router.put('/item/:id/toggle', (req, res) => {
-	// Find the TodolistItem
 	TodoListItem.findByPk(req.params.id).then((item) => {
 		if (item.completed) {
 			item.completed = false;
 		} else {
 			item.completed = true;
 		}
-		console.log(item);
 		item.save();
 	});
-	// Update the item with the opposite "completed" boolean
 });
 // ========== delete a to do item ===========
 router.delete('/todolist/:listId/item/:id', (req, res) => {
@@ -87,5 +85,18 @@ router.delete('/todolist/:listId/item/:id', (req, res) => {
 		});
 });
 // ========== delete a todo list ============
-
+router.delete('/todolist/:id/', (req, res) => {
+	TodoList.destroy({
+		where: {
+			id: req.params.id
+		}
+	})
+		.then(() => {
+			console.log('deleted a list');
+			res.redirect('/todolist');
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+});
 module.exports = router;

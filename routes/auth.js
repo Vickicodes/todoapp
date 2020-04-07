@@ -29,10 +29,3 @@ module.exports = function(app, passport) {
 		});
 	});
 };
-
-function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated()) return next();
-	req.flash('error', 'please log in first');
-	res.redirect('/');
-	console.log('user logged out');
-}

@@ -1,13 +1,13 @@
 <%- include("partials/header") %>
-<div class="container">
+<div class="container d-none d-sm-block ">
     <div class="jumbotron fluid-jumbotron bg-transparent text-center">
-        <h1 id="homeHeader" >Welcome to your to-do list app</h1>
+        <h1 class="header" >Welcome to your to-do list app</h1>
         <% if(!currentUser){ %>
-            <p>Log in to see your to do lists</p>
+            <p>Log in or register to start creating lists!</p>
         <% } else { %>
-            <a href="/todolist">Take me to the todo lists</a>
-        <% }; %>        
+            <a pt-1 href="/todolist">Take me to my todo lists!</a>
+        <% }; %>  
+        <img class="rounded pt-2 mx-auto d-block" src="todo.gif" alt="todostatic.png">      
     </div>
-    <p class="text-center">There will also be a gif here showing an example todo list</p>
 </div>
 <%- include("partials/footer") %>

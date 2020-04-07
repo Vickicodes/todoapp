@@ -1,43 +1,52 @@
 <%- include("partials/header") %>
-<div class="row">
-    <div class="col-md-4">
-        <div class="box">
-            <% if(currentUser) { %>
-                <h1 class="ListHeader"><%= currentUser.username %>'s lists <i class="fas fa-tasks"></i> </h1>
-                <ul class="">
-                    <li>
-                        <form id="newList" action="/todolist" method="POST">
-                            <input type="text" name="name" placeholder="create a new todo list">
-                        </form>
-                    </li>
-                    <% todoLists.forEach((todoList) => { %>
-                        <li class="todoItem"><span class="deleteIcon"><i class="fas fa-trash-alt"></i></span><%= todoList.name %></li>
-                    <% }); %>
-                </ul>
-            <% }; %>
+<% if(!currentUser) { %>
+    <div class="container d-none d-sm-block ">
+        <div class="jumbotron fluid-jumbotron bg-transparent text-center">
+            <h1 class="header" >Log in to see your lists</h1>    
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="box">
-            <% if(currentUser) { %>
-                <% fullLists.forEach((todoList) => { %>
-                    <h2 class="ListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
-                    <form id="todoform" action="/todolist/<%= todoList.id %>/item" method="POST">
-                        <input type="text" name="todo" placeholder="add new to-do item">
-                    </form>
-                    <ul class="todoList">
-                        <% todoList.todoListItems.forEach(function(newTodo) { %>
-                            <li class="todoItem <%= newTodo.completed ? 'completed' : null %>" data-id="<%= newTodo.id %>">
-                                <form action="/todolist/<%= todoList.id %>/item/<%= newTodo.id %>?_method=DELETE" method="POST">
+    <% } else { %>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box  d-none d-sm-block">
+                    <h1 class="ListHeader"><%= currentUser.username %>'s lists <i class="fas fa-tasks"></i> </h1>
+                    <ul class="todoLists">
+                        <li>
+                            <form id="newList" action="/todolist" method="POST">
+                                <input type="text" name="name" placeholder="create a new todo list">
+                            </form>
+                        </li>
+                        <% todoLists.forEach((todoList) => { %>
+                            <li class="todoItem" data-id="<%= todoList.id %>">
+                                <form action="/todolist/<%= todoList.id %>?_method=DELETE" method="POST">
                                     <button class="deleteIcon"><i class="fas fa-trash-alt"></i></button>
-                                    <%= newTodo.description %>
+                                    <%= todoList.name %>
                                 </form>
                             </li>
-                        <% }); %> 
+                        <% }); %>
                     </ul>
-                <% }); %>
-            <% }; %>
-        </div>    
-    </div>
-</div>  
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="box  d-none d-sm-block">
+                    <% fullLists.forEach((todoList) => { %>
+                        <h2 class="ListHeader"><%= todoList.name %><i class="fas fa-plus"></i></h1>
+                        <form id="todoform" action="/todolist/<%= todoList.id %>/item" method="POST">
+                            <input type="text" name="todo" placeholder="add new to-do item">
+                        </form>
+                        <ul class="todoList">
+                            <% todoList.todoListItems.forEach(function(newTodo) { %>
+                                <li class="todoItem <%= newTodo.completed ? 'completed' : null %>" data-id="<%= newTodo.id %>">
+                                    <form action="/todolist/<%= todoList.id %>/item/<%= newTodo.id %>?_method=DELETE" method="POST">
+                                        <button class="deleteIcon"><i class="fas fa-trash-alt"></i></button>
+                                        <%= newTodo.description %>
+                                    </form>
+                                </li>
+                            <% }); %> 
+                        </ul>
+                    <% }); %>
+                </div>    
+            </div>
+        </div>  
+ <% }; %> 
 <%- include("partials/footer") %>
