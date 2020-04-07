@@ -2,11 +2,7 @@ const bCrypt = require('bcrypt-nodejs');
 ('use strict');
 
 module.exports = {
-	up: (queryInterface, Sequelize) => {
-		/*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-    */
+	up: (queryInterface) => {
 		return queryInterface.bulkInsert('users', [
 			{
 				username: 'vicki',
@@ -17,14 +13,7 @@ module.exports = {
 		]);
 	},
 
-	down: (queryInterface, Sequelize) => {
-		/*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
+	down: (queryInterface) => {
 		return queryInterface.bulkDelete('users', null, {});
 	}
 };

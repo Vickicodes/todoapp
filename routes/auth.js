@@ -5,9 +5,9 @@ module.exports = function(app, passport) {
 		passport.authenticate('local-signup', {
 			successRedirect: '/todolist',
 			successFlash: true,
-			successMessage: 'you have successfully registered',
+			successMessage: 'You have successfully registered',
 			failureRedirect: '/',
-			failureMessage: 'username or password is incorrect',
+			failureMessage: 'Username or password is incorrect',
 			failureFlash: true
 		})
 	);
@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
 			successRedirect: '/todolist',
 			successFlash: true,
 			failureRedirect: '/',
-			failureMessage: 'username or password is incorrect',
+			failureMessage: 'Username or password is incorrect',
 			failureFlash: true
 		})
 	);

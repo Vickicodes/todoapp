@@ -5,12 +5,9 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
-
-//========== Models =====================
+const PORT = process.env.PORT || 3000;
 const models = require('./models');
-const TodoList = models.todo_list;
-const TodoListItem = models.todo_list_item;
-// =======  ==================
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
@@ -19,8 +16,6 @@ app.use(flash());
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
-
-const PORT = process.env.PORT || 3000;
 
 //========== passport  ============
 app.use(
@@ -32,9 +27,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+
 // ======== load passport strategies  ============
 require('./config/passport.js')(passport, models.user);
 require('./routes/auth.js')(app, passport);
+
 // ===== Pass User and Flash message to each template ==========
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
@@ -44,10 +41,9 @@ app.use((req, res, next) => {
 	next();
 });
 
-console.log('Got to app.js:45');
 // ============= Routes ==================
 app.use('/', require('./routes/index.js'));
 
 app.listen(PORT, () => {
-	console.log('To Do app on port', PORT);
+	console.log('To Do app running on port', PORT);
 });

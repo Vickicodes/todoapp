@@ -6,13 +6,13 @@ const TodoListItem = models.todo_list_item;
 
 // ========== Routes ======================
 router.get('/', (req, res) => {
-	console.log('Attempting to render landing page');
 	res.render('landing');
 });
 // ===== get the todo lists from the db ====
 router.get('/todolist/:id?', async (req, res) => {
 	let todolists = [];
 	let fullLists = [];
+
 	if (req.user) {
 		todolists = await TodoList.findAll({
 			where: {
@@ -27,6 +27,7 @@ router.get('/todolist/:id?', async (req, res) => {
 			]
 		});
 	}
+
 	if (req.params.id) {
 		fullLists = todolists.filter((todoList) => {
 			return todoList.id == parseInt(req.params.id);
@@ -34,11 +35,14 @@ router.get('/todolist/:id?', async (req, res) => {
 	} else if (todolists.length > 0) {
 		fullLists.push(todolists[0]);
 	}
+
 	return res.render('index', { todoLists: todolists, fullLists: fullLists });
 });
+
 // ========= Create a new list ===================
 router.post('/todolist', (req, res) => {
-	let newTodoList = { name: req.body.name, userId: req.user.id };
+	const newTodoList = { name: req.body.name, userId: req.user.id };
+
 	TodoList.create(newTodoList)
 		.then((todolist) => {
 			res.redirect('/todolist/' + todolist.id);
@@ -49,7 +53,7 @@ router.post('/todolist', (req, res) => {
 });
 // ======== Create a new todo item ===============
 router.post('/todolist/:id/item', (req, res) => {
-	let newTodoItem = { description: req.body.todo, todoListId: req.params.id, completed: false };
+	const newTodoItem = { description: req.body.todo, todoListId: req.params.id, completed: false };
 
 	TodoListItem.create(newTodoItem)
 		.then(() => {
@@ -67,6 +71,7 @@ router.put('/item/:id/toggle', (req, res) => {
 		} else {
 			item.completed = true;
 		}
+
 		item.save();
 	});
 });
@@ -78,7 +83,6 @@ router.delete('/todolist/:listId/item/:id', (req, res) => {
 		}
 	})
 		.then(() => {
-			console.log('deleted an item');
 			res.redirect('/todolist/' + req.params.listId);
 		})
 		.catch((err) => {
@@ -93,11 +97,11 @@ router.delete('/todolist/:id/', (req, res) => {
 		}
 	})
 		.then(() => {
-			console.log('deleted a list');
 			res.redirect('/todolist');
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 });
+
 module.exports = router;

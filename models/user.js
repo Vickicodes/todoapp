@@ -1,4 +1,3 @@
-'use strict';
 const passportLocalSequelize = require('passport-local-sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -11,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
 		{}
 	);
 	User.associate = function(models) {
-		// associations can be defined here
 		User.hasMany(models.todo_list, {
 			foreignKey: 'userId',
 			as: 'todoLists',
 			onDelete: 'CASCADE'
 		});
 	};
+
 	passportLocalSequelize.attachToUser(User, {
 		usernameField: 'username'
 	});

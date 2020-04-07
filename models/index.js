@@ -1,5 +1,3 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
@@ -11,6 +9,7 @@ const config = envConfigs[env];
 const db = {};
 
 let sequelize;
+
 if (config.url) {
 	sequelize = new Sequelize(config.url, config);
 } else {

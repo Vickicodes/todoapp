@@ -1,4 +1,13 @@
 const bCrypt = require('bcrypt-nodejs');
+
+const generateHash = (password) => {
+	return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+};
+
+const isValidPassword = (userpass, password) => {
+	return bCrypt.compareSync(password, userpass);
+};
+
 module.exports = (passport, user) => {
 	var User = user;
 	var LocalStrategy = require('passport-local').Strategy;
@@ -13,9 +22,7 @@ module.exports = (passport, user) => {
 			},
 			(req, username, password, done) => {
 				username = username.toLowerCase();
-				const generateHash = (password) => {
-					return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-				};
+
 				User.findOne({
 					where: {
 						username: username
@@ -31,13 +38,13 @@ module.exports = (passport, user) => {
 							username: username,
 							password: userPassword
 						};
+
 						User.create(data).then((newUser) => {
 							if (!newUser) {
 								return done(null, false);
 							}
-							if (newUser) {
-								return done(null, newUser, { message: 'successfully registered' });
-							}
+
+							return done(null, newUser, { message: 'successfully registered' });
 						});
 					}
 				});
@@ -56,9 +63,7 @@ module.exports = (passport, user) => {
 			},
 			(req, username, password, done) => {
 				const User = user;
-				const isValidPassword = (userpass, password) => {
-					return bCrypt.compareSync(password, userpass);
-				};
+
 				User.findOne({
 					where: {
 						username: username.toLowerCase()
@@ -71,6 +76,7 @@ module.exports = (passport, user) => {
 							});
 						}
 						const userinfo = user.get();
+
 						return done(null, userinfo);
 					})
 					.catch((err) => {

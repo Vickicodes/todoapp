@@ -1,13 +1,14 @@
 $(document).ready(function() {
-	// cross off todo item
 	$('ul.todoList').on('click', '.todoItem', function() {
-		$(this).toggleClass('completed');
 		const itemId = $(this).attr('data-id');
+
+		$(this).toggleClass('completed');
 		$.ajax({
 			url: '/item/' + itemId + '/toggle',
 			method: 'PUT'
 		});
 	});
+
 	$('ul.todoLists').on('click', '.todoItem', function() {
 		const listId = $(this).attr('data-id');
 		window.location = '/todolist/' + listId;
@@ -18,11 +19,12 @@ $(document).ready(function() {
 	});
 
 	$('#registerForm').on('submit', function() {
-		let username = $('#registerForm input[name="username"]').val();
-		let password = $('#registerForm input[name="password"]').val();
-		let confirm = $('#registerForm input[name="confirm"]').val();
+		const username = $('#registerForm input[name="username"]').val();
+		const password = $('#registerForm input[name="password"]').val();
+		const confirm = $('#registerForm input[name="confirm"]').val();
 		let messageElement = $('.passwordError');
 		let isValid = true;
+
 		if (password !== confirm) {
 			messageElement.text('Passwords do not match');
 			messageElement.removeClass('d-none');
@@ -34,6 +36,7 @@ $(document).ready(function() {
 		} else {
 			messageElement.addClass('d-none');
 		}
+
 		return isValid;
 	});
 });
