@@ -20,6 +20,8 @@ app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
+const PORT = process.env.PORT || 3000;
+
 //========== passport  ============
 app.use(
 	session({
@@ -46,6 +48,6 @@ console.log('Got to app.js:45');
 // ============= Routes ==================
 app.use('/', require('./routes/index.js'));
 
-app.listen(3000, () => {
-	console.log('To Do app on port 3000');
+app.listen(PORT, () => {
+	console.log('To Do app on port', PORT);
 });
